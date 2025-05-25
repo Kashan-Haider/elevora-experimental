@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #0a0e13;
+  --color-secondary: #1a1f26;
+  
+  /* Text Colors - High contrast with warm undertones */
+  --color-primaryText: #f8fafc;
+  --color-secondaryText: #94a3b8;
+  
+  /* Accent Colors - Vibrant but balanced */
+  --color-primaryAccent: #3b82f6;    /* Modern blue */
+  --color-secondaryAccent: #8b5cf6;   /* Purple complement */
+  
+  /* Status Colors - Refined and accessible */
+  --color-success: #10b981;          /* Emerald green */
+  --color-warning: #f59e0b;          /* Amber orange */
+  --color-error: #ef4444;            /* Clean red */
+  
+  /* Additional utility colors for depth */
+  --color-surface: #111827;          /* Card/component backgrounds */
+  --color-border: #374151;           /* Subtle borders */
+  --color-muted: #6b7280;           /* Disabled/muted elements */
+  --color-accent-hover: #2563eb;     /* Hover state for primary accent */
+  --color-accent-secondary-hover: #7c3aed; /* Hover state for secondary accent */
+}
