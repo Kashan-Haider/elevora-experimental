@@ -12,7 +12,8 @@ class Project(Base):
     domain = Column(String, nullable=False)
     created_at = Column(DateTime, default=now)
 
+    # Relationships
     user = relationship("User", back_populates="projects")
-    pages = relationship("Page", back_populates="project", cascade="all, delete-orphan", lazy="joined")
-    keywords = relationship("Keyword", back_populates="project", cascade="all, delete-orphan", lazy="joined")
-    competitors = relationship("Competitor", back_populates="project", cascade="all, delete-orphan", lazy="joined")
+    pages = relationship("Page", back_populates="project", cascade="all, delete-orphan")
+    keywords = relationship("Keyword", back_populates="project", cascade="all, delete-orphan")
+    competitors = relationship("Competitor", back_populates="project", cascade="all, delete-orphan")

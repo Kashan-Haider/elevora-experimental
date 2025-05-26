@@ -12,4 +12,5 @@ class User(Base):
     password_hash = Column(String, nullable=False)
     created_at = Column(DateTime, default=now)
 
-    projects = relationship("Project", back_populates="user", cascade="all, delete-orphan", lazy="joined")
+    # Relationships
+    projects = relationship("Project", back_populates="user", cascade="all, delete-orphan")

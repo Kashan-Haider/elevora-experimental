@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, Header, HTTPException, Query
-from models import User, Project,Page, Audit
+from models import User, Project, Page, AuditDetail
 from schemas.project import ProjectCreate, ProjectOut
 from sqlalchemy.orm import Session
 from db.session import get_session
@@ -8,7 +8,7 @@ from uuid import uuid4
 from utils.user.getUserByToken import getUserByToken
 from typing import List
 from pydantic import BaseModel, Field
-from utils.audit.audit_site import auditSite
+from utils.audit.enhanced_audit import auditSite
 
 
 router = APIRouter()
@@ -92,33 +92,19 @@ async def audit_site(request: SiteAuditRequest, session:Session = Depends(get_se
     
 @router.get('/get-audit-data')
 async def get_audit_data(project_id: str, session: Session = Depends(get_session)):
-    # Ensure project exists
-    project = session.query(Project).filter(Project.id == project_id).first()
-    if not project:
-        raise HTTPException(status_code=404, detail="Project not found")
-
-    # Get all pages under the project
-    pages = session.query(Page).filter(Page.project_id == project_id).all()
-    if not pages:
+    # Check if project exists and get audit details in a single query
+    audit_details = session.query(AuditDetail)\
+        .join(Page, AuditDetail.page_id == Page.id)\
+        .join(Project, Page.project_id == Project.id)\
+        .filter(Project.id == project_id)\
+        .all()
+    
+    # If no audit details found, check if project exists
+    if not audit_details:
+        project_exists = session.query(Project).filter(Project.id == project_id).first()
+        if not project_exists:
+            raise HTTPException(status_code=404, detail="Project not found")
+        # Project exists but no audit details yet - return empty list
         return []
-
-    page_ids = [page.id for page in pages]
-
-    # Get audits for all pages
-    audits = session.query(Audit).filter(Audit.page_id.in_(page_ids)).all()
-
-    # Serialize audit data
-    audit_data = [
-        {
-            "id": audit.id,
-            "page_id": audit.page_id,
-            "audit_type": audit.audit_type,
-            "score": audit.score,
-            "issues": audit.issues,
-            "recommendations": audit.recommendations,
-            "created_at": audit.created_at,
-        }
-        for audit in audits
-    ]
-
-    return audit_data
+    
+    return audit_details
