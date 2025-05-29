@@ -34,8 +34,8 @@ export default function AuditSite() {
         body: JSON.stringify({
           url: domain,
           project_id:project_id,
-          max_pages: 5,
-          max_urls_per_domain: 5,
+          max_pages: 2,
+          max_urls_per_domain: 2,
         }),
       });
 

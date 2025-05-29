@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useProjectStore } from '../../store/ProjectStore';
-import { Project } from '../typing';
+// import { Project } from '../types/audit';
 
 export default function UserProfile() {
   const [user, setUser] = useState<any>(null);
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [projects, setProjects] = useState<any[]>([]);
   const [error, setError] = useState('');
   const {
     selectedProject,
@@ -55,7 +55,7 @@ export default function UserProfile() {
 
         {user && (
           <div className="mb-6">
-            <p><span className="text-secondaryText">Name:</span> {user.full_name || user.email}</p>
+            <p><span className="text-secondaryText">Username:</span> {user.username}</p>
             <p><span className="text-secondaryText">Email:</span> {user.email}</p>
           </div>
         )}

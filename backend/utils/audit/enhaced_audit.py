@@ -835,19 +835,16 @@ class SEOAudit:
         }
 
 
-def save_audit_details(session, page_id, data, scorecard):
+def save_audit_details(session, audit_id, data, scorecard):
     """
     Save detailed audit metrics for visualization purposes
     """
-    audit_id = str(uuid4())  # Generate a unique ID for this audit
-    project_id = session.query(Page).filter_by(id=page_id).first().project_id
     detail_records = []
     
     # Metadata metrics
     if data.get("title"):
         detail_records.append(AuditDetail(
-            id=str(uuid4()),
-            page_id=page_id,
+            audit_id=audit_id,
             category="metadata",
             subcategory="title",
             metric_name="title_length",
@@ -856,8 +853,7 @@ def save_audit_details(session, page_id, data, scorecard):
         ))
         
         detail_records.append(AuditDetail(
-            id=str(uuid4()),
-            page_id=page_id,
+            audit_id=audit_id,
             category="metadata",
             subcategory="title",
             metric_name="score",
@@ -865,19 +861,16 @@ def save_audit_details(session, page_id, data, scorecard):
         ))
         
         detail_records.append(AuditDetail(
-            id=str(uuid4()),
-            page_id=page_id,
+            audit_id=audit_id,
             category="metadata",
             subcategory="title",
             metric_name="status",
             text_value=scorecard["metadata"]["title"]["details"].get("status")
         ))
-
     
     if data.get("meta_description"):
         detail_records.append(AuditDetail(
-            id=str(uuid4()),
-            page_id=page_id,
+            audit_id=audit_id,
             category="metadata",
             subcategory="meta_description",
             metric_name="meta_description_length",
@@ -886,8 +879,7 @@ def save_audit_details(session, page_id, data, scorecard):
         ))
         
         detail_records.append(AuditDetail(
-            id=str(uuid4()),
-            page_id=page_id,
+            audit_id=audit_id,
             category="metadata",
             subcategory="meta_description",
             metric_name="score",
@@ -895,8 +887,7 @@ def save_audit_details(session, page_id, data, scorecard):
         ))
         
         detail_records.append(AuditDetail(
-            id=str(uuid4()),
-            page_id=page_id,
+            audit_id=audit_id,
             category="metadata",
             subcategory="meta_description",
             metric_name="status",
@@ -908,8 +899,7 @@ def save_audit_details(session, page_id, data, scorecard):
     for tag in meta_tags:
         if data.get(tag):
             detail_records.append(AuditDetail(
-                id=str(uuid4()),
-                page_id=page_id,
+                audit_id=audit_id,
                 category="metadata",
                 subcategory="other_meta_tags",
                 metric_name=tag,
@@ -919,8 +909,7 @@ def save_audit_details(session, page_id, data, scorecard):
     
     if data.get("meta_og_tags"):
         detail_records.append(AuditDetail(
-            id=str(uuid4()),
-            page_id=page_id,
+            audit_id=audit_id,
             category="metadata",
             subcategory="other_meta_tags",
             metric_name="og_tags_count",
@@ -930,8 +919,7 @@ def save_audit_details(session, page_id, data, scorecard):
     
     if data.get("meta_twitter_tags"):
         detail_records.append(AuditDetail(
-            id=str(uuid4()),
-            page_id=page_id,
+            audit_id=audit_id,
             category="metadata",
             subcategory="other_meta_tags",
             metric_name="twitter_tags_count",
@@ -943,8 +931,7 @@ def save_audit_details(session, page_id, data, scorecard):
     # Headings
     for heading_type, count in data.get("headings_count", {}).items():
         detail_records.append(AuditDetail(
-            id=str(uuid4()),
-            page_id=page_id,
+            audit_id=audit_id,
             category="content",
             subcategory="headings",
             metric_name=f"{heading_type}_count",
@@ -952,8 +939,7 @@ def save_audit_details(session, page_id, data, scorecard):
         ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="content",
         subcategory="headings",
         metric_name="score",
@@ -961,8 +947,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="content",
         subcategory="headings",
         metric_name="status",
@@ -971,8 +956,7 @@ def save_audit_details(session, page_id, data, scorecard):
     
     # Content quality
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="content",
         subcategory="content_quality",
         metric_name="word_count",
@@ -980,8 +964,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="content",
         subcategory="content_quality",
         metric_name="text_html_ratio",
@@ -989,8 +972,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="content",
         subcategory="content_quality",
         metric_name="paragraphs_count",
@@ -998,8 +980,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="content",
         subcategory="content_quality",
         metric_name="score",
@@ -1011,8 +992,7 @@ def save_audit_details(session, page_id, data, scorecard):
         top_keywords = sorted(data["keywords_density"].items(), key=lambda x: x[1]["density"], reverse=True)[:10]
         for i, (keyword, info) in enumerate(top_keywords):
             detail_records.append(AuditDetail(
-                id=str(uuid4()),
-                page_id=page_id,
+                audit_id=audit_id,
                 category="content",
                 subcategory="keyword_optimization",
                 metric_name=f"keyword_{i+1}",
@@ -1022,8 +1002,7 @@ def save_audit_details(session, page_id, data, scorecard):
             ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="content",
         subcategory="keyword_optimization",
         metric_name="score",
@@ -1033,8 +1012,7 @@ def save_audit_details(session, page_id, data, scorecard):
     # Media metrics
     # Images
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="media",
         subcategory="images",
         metric_name="total_images",
@@ -1042,8 +1020,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="media",
         subcategory="images",
         metric_name="images_with_alt",
@@ -1051,8 +1028,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="media",
         subcategory="images",
         metric_name="images_without_alt",
@@ -1060,8 +1036,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="media",
         subcategory="images",
         metric_name="images_with_alt_percentage",
@@ -1069,8 +1044,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="media",
         subcategory="images",
         metric_name="score",
@@ -1079,8 +1053,7 @@ def save_audit_details(session, page_id, data, scorecard):
     
     # Videos and audio
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="media",
         subcategory="videos_and_audio",
         metric_name="videos_count",
@@ -1088,8 +1061,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="media",
         subcategory="videos_and_audio",
         metric_name="audios_count",
@@ -1097,8 +1069,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="media",
         subcategory="videos_and_audio",
         metric_name="score",
@@ -1108,8 +1079,7 @@ def save_audit_details(session, page_id, data, scorecard):
     # Technical metrics
     # Structured data
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="technical",
         subcategory="structured_data",
         metric_name="has_structured_data",
@@ -1117,8 +1087,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="technical",
         subcategory="structured_data",
         metric_name="structured_data_count",
@@ -1127,8 +1096,7 @@ def save_audit_details(session, page_id, data, scorecard):
     
     if data.get("structured_data_types"):
         detail_records.append(AuditDetail(
-            id=str(uuid4()),
-            page_id=page_id,
+            audit_id=audit_id,
             category="technical",
             subcategory="structured_data",
             metric_name="structured_data_types",
@@ -1136,8 +1104,7 @@ def save_audit_details(session, page_id, data, scorecard):
         ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="technical",
         subcategory="structured_data",
         metric_name="score",
@@ -1146,8 +1113,7 @@ def save_audit_details(session, page_id, data, scorecard):
     
     # Mobile friendly
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="technical",
         subcategory="mobile_friendly",
         metric_name="has_viewport_meta",
@@ -1155,8 +1121,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="technical",
         subcategory="mobile_friendly",
         metric_name="has_mobile_friendly_design",
@@ -1164,8 +1129,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="technical",
         subcategory="mobile_friendly",
         metric_name="score",
@@ -1174,8 +1138,7 @@ def save_audit_details(session, page_id, data, scorecard):
     
     # Page speed indicators
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="technical",
         subcategory="page_speed_indicators",
         metric_name="page_size_kb",
@@ -1183,8 +1146,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="technical",
         subcategory="page_speed_indicators",
         metric_name="js_resources_count",
@@ -1192,8 +1154,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="technical",
         subcategory="page_speed_indicators",
         metric_name="css_resources_count",
@@ -1201,8 +1162,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="technical",
         subcategory="page_speed_indicators",
         metric_name="inline_styles",
@@ -1210,8 +1170,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="technical",
         subcategory="page_speed_indicators",
         metric_name="inline_scripts",
@@ -1219,8 +1178,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="technical",
         subcategory="page_speed_indicators",
         metric_name="score",
@@ -1230,8 +1188,7 @@ def save_audit_details(session, page_id, data, scorecard):
     # Resource hints
     for hint_type, urls in data.get("resource_hints", {}).items():
         detail_records.append(AuditDetail(
-            id=str(uuid4()),
-            page_id=page_id,
+            audit_id=audit_id,
             category="technical",
             subcategory="page_speed_indicators",
             metric_name=f"has_{hint_type}",
@@ -1240,8 +1197,7 @@ def save_audit_details(session, page_id, data, scorecard):
     
     # Security
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="technical",
         subcategory="security",
         metric_name="has_https",
@@ -1249,8 +1205,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="technical",
         subcategory="security",
         metric_name="score",
@@ -1260,8 +1215,7 @@ def save_audit_details(session, page_id, data, scorecard):
     # Links metrics
     # Internal links
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="links",
         subcategory="internal_links",
         metric_name="internal_links_count",
@@ -1269,8 +1223,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="links",
         subcategory="internal_links",
         metric_name="internal_links_with_text",
@@ -1278,8 +1231,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="links",
         subcategory="internal_links",
         metric_name="internal_links_with_text_percentage",
@@ -1287,8 +1239,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="links",
         subcategory="internal_links",
         metric_name="score",
@@ -1297,8 +1248,7 @@ def save_audit_details(session, page_id, data, scorecard):
     
     # External links
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="links",
         subcategory="external_links",
         metric_name="external_links_count",
@@ -1306,8 +1256,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="links",
         subcategory="external_links",
         metric_name="external_links_with_text",
@@ -1315,8 +1264,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="links",
         subcategory="external_links",
         metric_name="external_links_with_nofollow",
@@ -1324,8 +1272,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="links",
         subcategory="external_links",
         metric_name="external_links_with_nofollow_percentage",
@@ -1333,8 +1280,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="links",
         subcategory="external_links",
         metric_name="score",
@@ -1343,8 +1289,7 @@ def save_audit_details(session, page_id, data, scorecard):
     
     # Canonical
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="links",
         subcategory="canonical",
         metric_name="has_canonical",
@@ -1352,8 +1297,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="links",
         subcategory="canonical",
         metric_name="canonical_matches_url",
@@ -1362,8 +1306,7 @@ def save_audit_details(session, page_id, data, scorecard):
     
     if data.get("canonical_url"):
         detail_records.append(AuditDetail(
-            id=str(uuid4()),
-            page_id=page_id,
+            audit_id=audit_id,
             category="links",
             subcategory="canonical",
             metric_name="canonical_url",
@@ -1371,8 +1314,7 @@ def save_audit_details(session, page_id, data, scorecard):
         ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="links",
         subcategory="canonical",
         metric_name="score",
@@ -1382,8 +1324,7 @@ def save_audit_details(session, page_id, data, scorecard):
     # International metrics
     # Language
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="international",
         subcategory="language",
         metric_name="has_language",
@@ -1392,8 +1333,7 @@ def save_audit_details(session, page_id, data, scorecard):
     
     if data.get("language"):
         detail_records.append(AuditDetail(
-            id=str(uuid4()),
-            page_id=page_id,
+            audit_id=audit_id,
             category="international",
             subcategory="language",
             metric_name="language",
@@ -1401,8 +1341,7 @@ def save_audit_details(session, page_id, data, scorecard):
         ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="international",
         subcategory="language",
         metric_name="score",
@@ -1411,8 +1350,7 @@ def save_audit_details(session, page_id, data, scorecard):
     
     # Hreflang
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="international",
         subcategory="hreflang",
         metric_name="has_hreflang",
@@ -1420,8 +1358,7 @@ def save_audit_details(session, page_id, data, scorecard):
     ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="international",
         subcategory="hreflang",
         metric_name="hreflang_count",
@@ -1430,8 +1367,7 @@ def save_audit_details(session, page_id, data, scorecard):
     
     if data.get("hreflang_tags"):
         detail_records.append(AuditDetail(
-            id=str(uuid4()),
-            page_id=page_id,
+            audit_id=audit_id,
             category="international",
             subcategory="hreflang",
             metric_name="hreflang_tags",
@@ -1439,8 +1375,7 @@ def save_audit_details(session, page_id, data, scorecard):
         ))
     
     detail_records.append(AuditDetail(
-        id=str(uuid4()),
-        page_id=page_id,
+        audit_id=audit_id,
         category="international",
         subcategory="hreflang",
         metric_name="score",
@@ -1454,7 +1389,7 @@ def save_audit_details(session, page_id, data, scorecard):
     session.commit()
 
 
-def auditSite(session, project_id, url, depth=1, max_pages=1):
+def auditSite(session, project_id:str, url, depth=1, max_pages=1):
     audit = SEOAudit(url, depth=depth, max_pages=max_pages)
     audit_result = audit.run()
     db = session
@@ -1483,14 +1418,23 @@ def auditSite(session, project_id, url, depth=1, max_pages=1):
                 page.title = page_title
                 page.last_audited = audit_time
                 db.commit()
-            
-            # 2. Save detailed metrics for visualization
-            save_audit_details(
-                db, 
-                page.id,
-                payload["data"], 
-                payload["scorecard"]
+
+            # 2. Create Audit entry
+            audit = Audit(
+                id=str(uuid4()),
+                page_id=page.id,
+                audit_type="full",
+                score=page_score,
+                issues=payload["scorecard"],
+                recommendations=audit_result["summary"]["top_issues"],
+                created_at=audit_time
             )
+            db.add(audit)
+            db.commit()
+            db.refresh(audit)
+            
+            # 3. Save detailed metrics for visualization
+            save_audit_details(db, audit.id, payload["data"], payload["scorecard"])
 
         db.commit()
         

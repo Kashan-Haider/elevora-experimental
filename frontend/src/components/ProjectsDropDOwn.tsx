@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useProjectStore } from '../../store/ProjectStore';
-import { Project } from '../typing';
+import { Project } from '../types/audit';
 
 export default function ProjectDropdown() {
   const [projects, setProjects] = useState<Project[]>([]);
