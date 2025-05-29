@@ -3,7 +3,6 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import GetStarted from "./pages/GetStarted";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AuditSite from "./pages/AuditSite";
 import UserProfile from "./pages/UserProfile";
 import Layout from "./components/Layout"; // ← Add this
 import AuditDashboard from "./pages/AuditDashboard";
@@ -21,7 +20,6 @@ const App = () => {
           <Route path="/get-started" element={<GetStarted />} />
         <Route element={<Layout />}>
           <Route path="/" element={<AuditDashboard />} />
-          <Route path="/audit-site" element={<AuditSite />} />
           <Route path="/user-profile" element={<UserProfile />} />
           <Route path="/create-project" element={<CreateProject />} />
         </Route>

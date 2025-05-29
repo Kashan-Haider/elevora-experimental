@@ -1629,7 +1629,4 @@ def auditSite(url, depth, max_pages, session, project_id):
     print(f"Pages Audited: {results['total_pages_audited']}")
     print(f"Duration: {results['audit_duration_seconds']} seconds")
     
-    with open(f"seo_audit_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json", "w") as f:
-        json.dump(results, f, indent=2, default=str)
-    
     auditor.save_to_database(audit_summary=results, session=session, project_id=project_id)

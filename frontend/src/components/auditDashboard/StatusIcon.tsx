@@ -7,7 +7,7 @@ interface StatusIconProps {
 }
 
 export const StatusIcon: React.FC<StatusIconProps> = ({ status, className = "h-4 w-4" }) => {
-  switch (status.toLowerCase()) {
+  switch (status?.toLowerCase()) {
     case 'good':
     case 'optimal':
     case 'passed':

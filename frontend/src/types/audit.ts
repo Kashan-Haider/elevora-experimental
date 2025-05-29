@@ -176,6 +176,14 @@ export interface Project {
   total_pages: number;
 }
 
+export interface ProjectDetails {
+  id: string;
+  name: string;
+  domain: string;
+  created_at: string;
+  user_id: string;
+}
+
 export interface AuditData {
   project: Project;
   pages: Page[];

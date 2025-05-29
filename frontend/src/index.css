@@ -53,3 +53,22 @@
   scrollbar-width: thin;
   scrollbar-color: #4b5563 #1f2937;
 }
+
+
+@keyframes ultraFade {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(0.85);
+    color: #002b67;
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+    color: #fff;
+  }
+}
+
+.ultra-fade-dot {
+  animation: ultraFade 1.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+

@@ -56,7 +56,7 @@ export default function CreateProject() {
         console.log("audit failed with error, " + err);
       }
   
-      navigate("/user-profile");
+      navigate("/");
     } catch (err) {
       setError((err as Error).message);
     }

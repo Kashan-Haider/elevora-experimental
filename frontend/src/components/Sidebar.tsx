@@ -18,7 +18,6 @@ export default function Sidebar() {
     { name: "Dashboard", path: "/", icon: HomeIcon },
     { name: "User Profile", path: "/user-profile", icon: UserIcon },
     { name: "Create New Project", path: "/create-project", icon: PlusIcon },
-    { name: "Audit Site", path: "/audit-site", icon: ClipboardDocumentListIcon },
     { name: "Generate Keywords", path: "/generate-keywords", icon: MagnifyingGlassIcon },
     { name: "Competitor Analysis", path: "/competitor-analysis", icon: ChartBarIcon },
     { name: "Content Suggestions", path: "/content-suggestions", icon: BoltIcon },
@@ -27,10 +26,10 @@ export default function Sidebar() {
   return (
     <div className="min-h-screen flex">
       {/* Mobile Menu Toggle */}
-      <div className="lg:hidden p-4 fixed z-50">
+      <div className="lg:hidden top-5 fixed text-primaryText bg-transparent backdrop-blur-3xl flex items-center justify-center shadow-black shadow-2xl rounded-lg px-3 py-1 right-5 z-50">
         <button
           onClick={() => setOpen(!open)}
-          className="text-primaryText hover:text-primaryAccent"
+          className="hover:text-primaryAccent"
         >
           {open ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
         </button>
